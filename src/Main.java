@@ -11,6 +11,7 @@ public class Main extends JPanel {
     private int arraySize = 60; // Default array size
     private final int DELAY = 50;
     private String currentAlgorithm = "Bubble Sort";
+    private int currentIndex = -1; // To highlight the current element being sorted
 
     private JSlider arraySizeSlider; // Slider for adjusting array size
     private JLabel arraySizeLabel;   // Label to display current array size
@@ -20,7 +21,7 @@ public class Main extends JPanel {
 
         JFrame frame = new JFrame("Sorting Visualizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(1000, 600);
 
         // Set dark background
         this.setBackground(Color.BLACK);
@@ -117,6 +118,7 @@ public class Main extends JPanel {
         for (int i = 0; i < arraySize; i++) {
             array[i] = random.nextInt(450) + 50;
         }
+        currentIndex = -1; // Reset current index
     }
 
     // Drawing bars on the panel
@@ -125,7 +127,11 @@ public class Main extends JPanel {
         int barWidth = getWidth() / arraySize; // Adjust bar width according to array size
         for (int i = 0; i < array.length; i++) {
             int height = array[i];
-            g.setColor(Color.CYAN); // Light color for bars to contrast with dark background
+            if (i == currentIndex) {
+                g.setColor(Color.RED); // Highlight the current element being sorted
+            } else {
+                g.setColor(Color.CYAN); // Light color for other bars
+            }
             g.fillRect(i * barWidth, getHeight() - height, barWidth, height);
         }
     }
@@ -134,6 +140,7 @@ public class Main extends JPanel {
     private void bubbleSort() {
         for (int i = 0; i < array.length - 1; i++) {
             for (int j = 0; j < array.length - i - 1; j++) {
+                currentIndex = j; // Track the current index
                 if (array[j] > array[j + 1]) {
                     swap(j, j + 1);
                 }
@@ -141,6 +148,7 @@ public class Main extends JPanel {
                 sleep();
             }
         }
+        currentIndex = -1; // Reset current index after sorting
     }
 
     // Selection Sort
@@ -148,6 +156,7 @@ public class Main extends JPanel {
         for (int i = 0; i < array.length - 1; i++) {
             int minIndex = i;
             for (int j = i + 1; j < array.length; j++) {
+                currentIndex = j; // Track the current index
                 if (array[j] < array[minIndex]) {
                     minIndex = j;
                 }
@@ -158,6 +167,7 @@ public class Main extends JPanel {
             repaint();
             sleep();
         }
+        currentIndex = -1; // Reset current index after sorting
     }
 
     // Insertion Sort
@@ -166,6 +176,7 @@ public class Main extends JPanel {
             int key = array[i];
             int j = i - 1;
             while (j >= 0 && array[j] > key) {
+                currentIndex = j; // Track the current index
                 array[j + 1] = array[j];
                 j--;
                 repaint();
@@ -175,6 +186,7 @@ public class Main extends JPanel {
             repaint();
             sleep();
         }
+        currentIndex = -1; // Reset current index after sorting
     }
 
     // Merge Sort
@@ -208,6 +220,7 @@ public class Main extends JPanel {
         int k = left;
 
         while (i < n1 && j < n2) {
+            currentIndex = k; // Track the current index
             if (L[i] <= R[j]) {
                 array[k] = L[i];
                 i++;
@@ -221,6 +234,7 @@ public class Main extends JPanel {
         }
 
         while (i < n1) {
+            currentIndex = k; // Track the current index
             array[k] = L[i];
             i++;
             k++;
@@ -229,12 +243,14 @@ public class Main extends JPanel {
         }
 
         while (j < n2) {
+            currentIndex = k; // Track the current index
             array[k] = R[j];
             j++;
             k++;
             repaint();
             sleep();
         }
+        currentIndex = -1; // Reset current index after sorting
     }
 
     // Quick Sort
@@ -250,6 +266,7 @@ public class Main extends JPanel {
         int pivot = array[high];
         int i = (low - 1);
         for (int j = low; j < high; j++) {
+            currentIndex = j; // Track the current index
             if (array[j] < pivot) {
                 i++;
                 swap(i, j);
@@ -278,6 +295,6 @@ public class Main extends JPanel {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Main());
+        SwingUtilities.invokeLater(Main::new);
     }
 }
