@@ -7,7 +7,7 @@ import javax.swing.event.ChangeListener;
 import java.util.Random;
 
 public class Main extends JPanel {
-String a;
+
     private int[] array;
     private int arraySize = 60; // Default array size
     private final int DELAY = 20;
